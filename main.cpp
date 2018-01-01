@@ -2,10 +2,11 @@
 #undef _UNICODE	//取消 Unicode 编码的宏定义，让整个项目以 MBCS 编码编译，以解决编码问题
 #include <iostream>
 #include <stdio.h>
+#include <graphics.h>
 
 #define VERSION_X 0
 #define VERSION_Y 0
-#define VERSION_Z 1		//More detail https://www.geekdt.com/335.html
+#define VERSION_Z 1		//Read more detail: https://www.geekdt.com/335.html
 
 using namespace std;
 
