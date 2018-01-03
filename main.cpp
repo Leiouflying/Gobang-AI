@@ -21,8 +21,15 @@ int main()
 	version();
 	initgraph(800, 600);
 	loadimage(NULL, ("IMAGE"), ("IMAGE_BACKGROUND"), 800, 600);
-	//loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 200, 200, 0, 0);
-	//loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 200, 200, 210, 0);
+
+	//∆Â≈Ã±ﬂΩÁ≤‚ ‘
+	int x1 = 28, y1 = 27;
+	fillrectangle(x1, y1, x1 + 20, y1 + 10);
+	int x2 = 573, y2 = 571;
+	fillrectangle(x2, y2, x2 - 20, y2 - 10);
+
+	loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, 30, 50);
+	loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, 210, 50);
 	//loadimage_transparent("white_piece.bmp", 800, 800, 0x00ff00, 0, 0);
 
 	system("pause");

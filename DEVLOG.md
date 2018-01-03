@@ -18,3 +18,4 @@
 - Added the black_piece.bmp into the rc file
 - Added the background.bmp into the rc file
 - Passed the test of the imageload
+- Test Tool: Checkerboard border test
