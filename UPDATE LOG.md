@@ -12,3 +12,8 @@
 - Created the GUI
 - Supported transparent picture(with bmp)
 
+## 20180103
+- Rewritted loadimage_transparent() to Support RC files
+- Add the white_piece.bmp into the rc file
+- Add the black_piece.bmp into the rc file
+
