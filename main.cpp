@@ -15,23 +15,17 @@ using namespace std;
 
 void version();
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);
+void testtools();
 
 int main()
 {
 	version();
 	initgraph(800, 600);
 	loadimage(NULL, ("IMAGE"), ("IMAGE_BACKGROUND"), 800, 600);
-
-	//∆Â≈Ã±ﬂΩÁ≤‚ ‘
-	int x1 = 28, y1 = 27;
-	fillrectangle(x1, y1, x1 + 20, y1 + 10);
-	int x2 = 573, y2 = 571;
-	fillrectangle(x2, y2, x2 - 20, y2 - 10);
-
 	loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, 30, 50);
 	loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, 210, 50);
 	//loadimage_transparent("white_piece.bmp", 800, 800, 0x00ff00, 0, 0);
-
+	testtools();
 	system("pause");
 	return 0;
 }
@@ -50,4 +44,12 @@ void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, i
 void version()	//More detail https://www.geekdt.com/335.html
 {
 	printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
+}
+void testtools()
+{
+	//∆Â≈Ã±ﬂΩÁ≤‚ ‘
+	int x1 = 28, y1 = 27;
+	fillrectangle(x1, y1, x1 + 20, y1 + 10);
+	int x2 = 573, y2 = 571;
+	fillrectangle(x2, y2, x2 - 20, y2 - 10);
 }
