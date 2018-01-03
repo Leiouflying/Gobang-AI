@@ -14,6 +14,7 @@
 
 ## 20180103
 - Rewritted loadimage_transparent() to Support RC files
-- Add the white_piece.bmp into the rc file
-- Add the black_piece.bmp into the rc file
-
+- Added the white_piece.bmp into the rc file
+- Added the black_piece.bmp into the rc file
+- Added the background.bmp into the rc file
+- Passed the test of the imageload

@@ -36,5 +36,11 @@
     <Image Include="resource\black_piece.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="resource\background.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="bitmap9.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

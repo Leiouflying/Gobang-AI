@@ -20,9 +20,9 @@ int main()
 {
 	version();
 	initgraph(800, 600);
-	loadimage(NULL, "C:\\bk.jpg");
-	loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 200, 200, 0, 0);
-	loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 200, 200, 210, 0);
+	loadimage(NULL, ("IMAGE"), ("IMAGE_BACKGROUND"), 800, 600);
+	//loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 200, 200, 0, 0);
+	//loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 200, 200, 210, 0);
 	//loadimage_transparent("white_piece.bmp", 800, 800, 0x00ff00, 0, 0);
 
 	system("pause");
