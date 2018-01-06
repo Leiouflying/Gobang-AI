@@ -15,16 +15,15 @@ using namespace std;
 
 void version();//More detail https://www.geekdt.com/335.html
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);//绘制透明贴图
-void create_environment(double m);//构建五子棋对弈环境
+void create_environment();//构建五子棋对弈环境
+void draw_piece(char color, int x, int y);//绘制棋子 映射为GUI
 void testtools();//测试工具
 
 int main()
 {
+
+	create_environment();//谱纸倍数为15.61 由于素材限制，只能绘制方形谱纸
 	version();
-	create_environment(15.61);//谱纸倍数为15.61 由于素材限制，只能绘制方形谱纸
-	
-	loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, 30, 50);//绘制白色棋子
-	loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, 210, 50);//绘制黑色棋子
 	system("pause");
 	return 0;
 }
@@ -44,7 +43,7 @@ void version()
 {
 	printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
 }
-void create_environment(double m)//"m"为谱纸倍数
+void create_environment()//"m"为谱纸倍数
 {
 	initgraph(800, 600);//构建绘图窗口
 
@@ -58,8 +57,32 @@ void create_environment(double m)//"m"为谱纸倍数
 	//谱纸倍数为15.61	由于素材限制，只能绘制方形谱纸
 	for (int i = 1; i <= 13; i++)
 	{
-		line(27, 27+2.5*m*i, 2.5*m * 14 + 27, 27 + 2.5*m*i);
-		line(27+2.5*m*i, 27, 27+2.5*m*i, 2.5*m*14+27);
+		line(27, 27 + 2.5*15.61*i, 2.5*15.61 * 14 + 27, 27 + 2.5*15.61*i);//画横线
+		line(27 + 2.5*15.61*i, 27, 27 + 2.5*15.61*i, 2.5*15.61 * 14 + 27);//画竖线
+	}
+
+}
+void draw_piece(char color, int x, int y)//color w:white_piece b:black_piece	local 0-14 only
+//棋子颜色,目标位置x轴偏移量,目标位置y轴偏移量
+{
+	x = 27 + 2.5*15.61*x - 15;//目标位置x轴的GUI位置偏移换算
+	y = 27 + 2.5*15.61*y - 15;//目标位置y轴的GUI位置偏移换算
+	switch (color)
+	{
+	case 'w':
+	{
+		loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, x, y);//绘制白色棋子
+		break;
+	}
+	case 'b':
+	{
+		loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, x, y);//绘制黑色棋子
+		break;
+	}
+	default:
+	{
+		outtext("ERROR: color error of draw_piece");
+	}
 	}
 
 }
@@ -76,4 +99,12 @@ void testtools()
 	line(27, 571, 2.5 * m * 14 + 27, 571);//下 横
 	line(27, 27, 27, 2.5 * m * 14 + 27);//左 竖
 	line(574, 27, 574, 2.5 * m * 14 + 27);//右 竖
+	//棋子映射测试 绘制全棋盘的棋子
+	for (int i = 0; i <= 15; i++)
+	{
+		for (int m = 0; m <= 15; m++)
+		{
+			draw_piece('b', i, m);
+		}
+	}
 }
