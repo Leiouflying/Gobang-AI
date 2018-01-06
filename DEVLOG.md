@@ -25,3 +25,4 @@
 - Created create_environment()
 - Created draw_piece() and tested
 - version(): GUI supported
+- version(): Mem Reduct

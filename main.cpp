@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <graphics.h>
 #include <conio.h>
-// 引用该库才能使用 TransparentBlt 函数
-#pragma comment( lib, "MSIMG32.LIB")
+#pragma comment( lib, "MSIMG32.LIB")// 引用该库才能使用 TransparentBlt 函数
 
 #define VERSION_X "0"
 #define VERSION_Y "0"
@@ -21,7 +20,6 @@ void testtools();//测试工具
 
 int main()
 {
-
 	create_environment();//谱纸倍数为15.61 由于素材限制，只能绘制方形谱纸
 	version();
 	system("pause");
@@ -41,12 +39,12 @@ void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, i
 }
 void version()
 {
-	char version[100] = "VERSION: ";
-	strcat_s(version, 100, VERSION_X);
-	strcat_s(version, 100, ".");
-	strcat_s(version, 100, VERSION_Y);
-	strcat_s(version, 100, ".");
-	strcat_s(version, 100, VERSION_Z);
+	char version[20] = "VERSION: ";
+	strcat_s(version, 20, VERSION_X);
+	strcat_s(version, 20, ".");
+	strcat_s(version, 20, VERSION_Y);
+	strcat_s(version, 20, ".");
+	strcat_s(version, 20, VERSION_Z);
 	outtext(version);
 	//printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
 }
