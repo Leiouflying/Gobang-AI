@@ -15,17 +15,16 @@ using namespace std;
 
 void version();//More detail https://www.geekdt.com/335.html
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);//绘制透明贴图
-void environment(double m);//构建五子棋对弈环境
+void create_environment(double m);//构建五子棋对弈环境
 void testtools();//测试工具
 
 int main()
 {
 	version();
-	environment(14.62);//谱纸倍数为14.62 由于素材限制，只能绘制方形谱纸
+	create_environment(15.61);//谱纸倍数为15.61 由于素材限制，只能绘制方形谱纸
+	
 	loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, 30, 50);//绘制白色棋子
 	loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, 210, 50);//绘制黑色棋子
-	//loadimage_transparent("white_piece.bmp", 800, 800, 0x00ff00, 0, 0);
-
 	system("pause");
 	return 0;
 }
@@ -45,18 +44,23 @@ void version()
 {
 	printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
 }
-void environment(double m)//"m"为谱纸倍数
+void create_environment(double m)//"m"为谱纸倍数
 {
 	initgraph(800, 600);//构建绘图窗口
+
 	//绘制棋盘
 	loadimage(NULL, ("IMAGE"), ("IMAGE_BACKGROUND"), 800, 600);
+
 	//绘制谱纸
-	setlinecolor(0x00ff00);//
-	setlinestyle(PS_SOLID | PS_ENDCAP_FLAT, 3);
-	line(27, 27, 2.5 * m * 15 + 27, 27);//谱纸倍数为14.62	由于素材限制，只能绘制方形谱纸
-	line(27, 571, 2.5 * m * 15 + 27, 571);
-	line(27, 27, 27, 2.5 * m * 15 + 27);
-	line(574, 27, 574, 2.5 * m * 15 + 27);
+	setlinecolor(0x000000);//
+	setlinestyle(PS_SOLID | PS_ENDCAP_FLAT, 1);
+
+	//谱纸倍数为15.61	由于素材限制，只能绘制方形谱纸
+	for (int i = 1; i <= 13; i++)
+	{
+		line(27, 27+2.5*m*i, 2.5*m * 14 + 27, 27 + 2.5*m*i);
+		line(27+2.5*m*i, 27, 27+2.5*m*i, 2.5*m*14+27);
+	}
 
 }
 void testtools()
@@ -66,4 +70,10 @@ void testtools()
 	fillrectangle(x1, y1, x1 + 20, y1 + 10);
 	int x2 = 574, y2 = 571;
 	fillrectangle(x2, y2, x2 - 20, y2 - 10);
+	//绘制棋盘外框线（素材中已提供，暂不重复绘制防止误差）
+	int m = 15.61;//create_environment()函数中会提供
+	line(27, 27, 2.5 * m * 14 + 27, 27);//上 横
+	line(27, 571, 2.5 * m * 14 + 27, 571);//下 横
+	line(27, 27, 27, 2.5 * m * 14 + 27);//左 竖
+	line(574, 27, 574, 2.5 * m * 14 + 27);//右 竖
 }

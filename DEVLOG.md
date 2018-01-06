@@ -20,3 +20,6 @@
 - Passed the test of the imageload
 - Test Tool: Checkerboard border test
 - Created testtools()
+
+## 20180106
+- Created create_environment()
