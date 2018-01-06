@@ -7,9 +7,9 @@
 // 引用该库才能使用 TransparentBlt 函数
 #pragma comment( lib, "MSIMG32.LIB")
 
-#define VERSION_X 0
-#define VERSION_Y 0
-#define VERSION_Z 1		//Read more detail: https://www.geekdt.com/335.html
+#define VERSION_X "0"
+#define VERSION_Y "0"
+#define VERSION_Z "1"		//Read more detail: https://www.geekdt.com/335.html
 
 using namespace std;
 
@@ -41,7 +41,14 @@ void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, i
 }
 void version()
 {
-	printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
+	char version[100] = "VERSION: ";
+	strcat_s(version, 100, VERSION_X);
+	strcat_s(version, 100, ".");
+	strcat_s(version, 100, VERSION_Y);
+	strcat_s(version, 100, ".");
+	strcat_s(version, 100, VERSION_Z);
+	outtext(version);
+	//printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
 }
 void create_environment()//"m"为谱纸倍数
 {

@@ -24,3 +24,4 @@
 ## 20180106
 - Created create_environment()
 - Created draw_piece() and tested
+- version(): GUI supported
