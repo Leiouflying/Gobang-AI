@@ -17,13 +17,26 @@ void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, i
 void create_environment();//构建五子棋对弈环境
 void draw_piece(char color, int x, int y);//绘制棋子 映射为GUI
 void testtools();//测试工具
-
+bool whofirst();//请求用户选择AI先手还是用户先手
 int main()
 {
-	create_environment();//谱纸倍数为15.61 由于素材限制，只能绘制方形谱纸
+	create_environment();
 	version();
+	whofirst();
 	system("pause");
 	return 0;
+}
+bool whofirst()//YES: 1	NO: 0
+{
+	HWND hwnd = GetHWnd();
+	if (MessageBox(hwnd, "Let AI first or not ?", "Select Who First", MB_YESNO | MB_ICONQUESTION) == IDYES)//来自WinUser API(MFC)的函数，判断谁先手
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y)//*.bmp file only
 //目标路径,目标宽度,目标高度,透明色,目标位置x轴偏移量,目标位置y轴偏移量
@@ -86,7 +99,7 @@ void draw_piece(char color, int x, int y)//color w:white_piece b:black_piece	loc
 	}
 	default:
 	{
-		outtext("ERROR: color error of draw_piece");
+		outtext("ERROR: color error of draw_piece");//颜色参数输入错误处理 直接输出一段报错字符串
 	}
 	}
 

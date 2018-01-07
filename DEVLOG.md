@@ -26,3 +26,6 @@
 - Created draw_piece() and tested
 - version(): GUI supported
 - version(): Mem Reduct
+
+## 20180107
+- Created whofirst() to select the first player
