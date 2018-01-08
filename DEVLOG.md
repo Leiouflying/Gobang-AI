@@ -29,3 +29,6 @@
 
 ## 20180107
 - Created whofirst() to select the first player
+
+## 20180109
+- Compile this project statically
