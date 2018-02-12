@@ -24,6 +24,7 @@ void testtools();//测试工具
 bool whofirst();//请求用户选择AI先手还是用户先手
 void clear_map();//清空棋盘地图
 bool judge(int x,int y);//检查该检查点是否构成一方获胜的条件
+
 int main()
 {
 	create_environment();
@@ -60,11 +61,11 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			y_down = 1;
 		}
 	}
-	if (x_left == 0 || x_right == 0 || y_up == 0 || y_down == 0)
+	if (x_left == 0 || x_right == 0 || y_up == 0 || y_down == 0)//判断获胜
 	{
 		return 1;
 	}
-	else
+	else//没人获胜
 	{
 		return 0;
 	}
@@ -112,7 +113,7 @@ void version()
 	strcat_s(version, 20, ".");
 	strcat_s(version, 20, VERSION_Z);
 	outtext(version);
-	//printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z);
+	//printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z); //终端界面输出的代码（无需启用）
 }
 void create_environment()//"m"为谱纸倍数
 {
@@ -122,7 +123,7 @@ void create_environment()//"m"为谱纸倍数
 	loadimage(NULL, ("IMAGE"), ("IMAGE_BACKGROUND"), 800, 600);
 
 	//绘制谱纸
-	setlinecolor(0x000000);//
+	setlinecolor(0x000000);
 	setlinestyle(PS_SOLID | PS_ENDCAP_FLAT, 1);
 
 	//谱纸倍数为15.61	由于素材限制，只能绘制方形谱纸
