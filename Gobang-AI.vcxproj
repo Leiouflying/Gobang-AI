@@ -126,7 +126,6 @@
     <ResourceCompile Include="Gobang-AI.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bitmap9.bmp" />
     <Image Include="resource\background.bmp" />
     <Image Include="resource\black_piece.bmp" />
     <Image Include="resource\white_piece.bmp" />

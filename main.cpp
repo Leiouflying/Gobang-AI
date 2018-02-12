@@ -12,15 +12,21 @@
 
 using namespace std;
 
+//Gobal variable
+int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
+
+//function
 void version();//More detail https://www.geekdt.com/335.html
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);//绘制透明贴图
 void create_environment();//构建五子棋对弈环境
 void draw_piece(char color, int x, int y);//绘制棋子 映射为GUI
 void testtools();//测试工具
 bool whofirst();//请求用户选择AI先手还是用户先手
+void clear_map();//清空棋盘地图
 int main()
 {
 	create_environment();
+	clear_map();
 	version();
 	whofirst();
 	system("pause");
@@ -36,6 +42,16 @@ bool whofirst()//YES: 1	NO: 0
 	else
 	{
 		return 0;
+	}
+}
+void clear_map()
+{
+	for (int m = 0; m <= 14; m++)
+	{
+		for (int n = 0; n <= 14; n++)
+		{
+			map[m][n] = 0;
+		}
 	}
 }
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y)//*.bmp file only
@@ -87,20 +103,20 @@ void draw_piece(char color, int x, int y)//color w:white_piece b:black_piece	loc
 	y = 27 + 2.5*15.61*y - 15;//目标位置y轴的GUI位置偏移换算
 	switch (color)
 	{
-	case 'w':
-	{
-		loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, x, y);//绘制白色棋子
-		break;
-	}
-	case 'b':
-	{
-		loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, x, y);//绘制黑色棋子
-		break;
-	}
-	default:
-	{
-		outtext("ERROR: color error of draw_piece");//颜色参数输入错误处理 直接输出一段报错字符串
-	}
+		case 'w':
+			{
+				loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, x, y);//绘制白色棋子
+				break;
+			}
+		case 'b':
+			{
+				loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, x, y);//绘制黑色棋子
+				break;
+			}
+		default:
+			{
+				outtext("ERROR: color error of draw_piece");//颜色参数输入错误处理 直接输出一段报错字符串
+			}
 	}
 
 }
