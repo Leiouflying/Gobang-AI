@@ -19,10 +19,11 @@ int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
 void version();//More detail https://www.geekdt.com/335.html
 void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);//绘制透明贴图
 void create_environment();//构建五子棋对弈环境
-void draw_piece(char color, int x, int y);//绘制棋子 映射为GUI
+void put_piece(char color, int x, int y);//绘制棋子 映射为GUI
 void testtools();//测试工具
 bool whofirst();//请求用户选择AI先手还是用户先手
 void clear_map();//清空棋盘地图
+bool judge(int x,int y);//检查该检查点是否构成一方获胜的条件
 int main()
 {
 	create_environment();
@@ -32,7 +33,43 @@ int main()
 	system("pause");
 	return 0;
 }
-bool whofirst()//YES: 1	NO: 0
+bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
+{
+	int color_source = map[x][y];
+	bool x_left=0, x_right=0, y_up=0, y_down=0;
+	for (int i = 1; i <= 4; i++)
+	{
+		if (map[x - i][y] != color_source)
+			//横向_逻辑左 判断是否连子
+		{
+			x_left = 1;
+		}
+		if (map[x + 1][y] != color_source)
+			//横向_逻辑右 判断是否连子
+		{
+			x_right = 1;
+		}
+		if (map[x][y - 1] != color_source)
+			//纵向_逻辑上 判断是否连子
+		{
+			y_up = 1;
+		}
+		if (map[x][y + 1] != color_source)
+			//纵向_逻辑下 判断是否连子
+		{
+			y_down = 1;
+		}
+	}
+	if (x_left == 0 || x_right == 0 || y_up == 0 || y_down == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+bool whofirst()//RETURN: YES: 1	NO: 0
 {
 	HWND hwnd = GetHWnd();
 	if (MessageBox(hwnd, "Let AI first or not ?", "Select Who First", MB_YESNO | MB_ICONQUESTION) == IDYES)//来自WinUser API(MFC)的函数，判断谁先手
@@ -96,7 +133,7 @@ void create_environment()//"m"为谱纸倍数
 	}
 
 }
-void draw_piece(char color, int x, int y)//color w:white_piece b:black_piece	local 0-14 only
+void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	local 0-14 only
 //棋子颜色,目标位置x轴偏移量,目标位置y轴偏移量
 {
 	x = 27 + 2.5*15.61*x - 15;//目标位置x轴的GUI位置偏移换算
@@ -138,7 +175,7 @@ void testtools()
 	{
 		for (int m = 0; m <= 15; m++)
 		{
-			draw_piece('b', i, m);
+			put_piece('b', i, m);
 		}
 	}
 }
