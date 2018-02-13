@@ -23,12 +23,12 @@ void put_piece(char color, int x, int y);//绘制棋子 映射为GUI
 void testtools();//测试工具
 bool whofirst();//请求用户选择AI先手还是用户先手
 void clear_map();//清空棋盘地图
-bool judge(int x,int y);//检查该检查点是否构成一方获胜的条件
+bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
 
 int main()
 {
 	create_environment();
-	clear_map();
+	clear_map();	//使用前可能要清理一下map
 	version();
 	whofirst();
 	system("pause");
@@ -37,7 +37,9 @@ int main()
 bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 {
 	int color_source = map[x][y];
-	bool x_left=0, x_right=0, y_up=0, y_down=0;
+	bool x_left = 0, x_right = 0, y_up = 0, y_down = 0,
+		slope_left_up = 0, slope_left_down = 0,
+		slope_right_up = 0, slope_right_down = 0;
 	for (int i = 1; i <= 4; i++)
 	{
 		if (map[x - i][y] != color_source)
@@ -60,8 +62,30 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 		{
 			y_down = 1;
 		}
+		if (map[x - 1][y - 1] != color_source)
+			//倾斜_逻辑左上 判断是否连子
+		{
+			slope_left_up = 1;
+		}
+		if (map[x - 1][y + 1] != color_source)
+			//倾斜_逻辑左下 判断是否连子
+		{
+			slope_left_down = 1;
+		}
+		if (map[x + 1][y - 1] != color_source)
+			//倾斜_逻辑右上 判断是否连子
+		{
+			slope_right_up = 1;
+		}
+		if (map[x + 1][y + 1] != color_source)
+			//倾斜_逻辑右下 判断是否连子
+		{
+			slope_right_down = 1;
+		}
 	}
-	if (x_left == 0 || x_right == 0 || y_up == 0 || y_down == 0)//判断获胜
+	if (x_left == 0 || x_right == 0 || y_up == 0 || y_down == 0||
+		slope_left_up==0||slope_left_down==0||
+		slope_right_up==0||slope_right_down==0)//判断获胜
 	{
 		return 1;
 	}
