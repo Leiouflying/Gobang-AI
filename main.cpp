@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <graphics.h>
 #include <conio.h>
+#include <time.h>
 #pragma comment( lib, "MSIMG32.LIB")// 引用该库才能使用 TransparentBlt 函数
 
 #define VERSION_X "0"
@@ -27,10 +28,23 @@ bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
 
 int main()
 {
+	srand((int)time(0));//Set a send of rand fuction by time
 	create_environment();
 	clear_map();	//使用前可能要清理一下map
 	version();
-	whofirst();
+	//map[1][1] = 1;
+	if (whofirst() == 1)//AI first
+	{
+		put_piece('b', (int)rand() % 14, (int)rand() % 14);
+	}
+	else if (whofirst == 0)//User first
+	{
+
+	}
+	else //未知错误 From: whofirst function
+	{
+
+	}
 	system("pause");
 	return 0;
 }
@@ -94,7 +108,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 		return 0;
 	}
 }
-bool whofirst()//RETURN: YES: 1	NO: 0
+bool whofirst()//RETURN: AI first: 1	User first: 0
 {
 	HWND hwnd = GetHWnd();
 	if (MessageBox(hwnd, "Let AI first or not ?", "Select Who First", MB_YESNO | MB_ICONQUESTION) == IDYES)//来自WinUser API(MFC)的函数，判断谁先手
@@ -168,11 +182,13 @@ void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	loca
 		case 'w':
 			{
 				loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, x, y);//绘制白色棋子
+				map[x][y]=2;
 				break;
 			}
 		case 'b':
 			{
 				loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, x, y);//绘制黑色棋子
+				map[x][y] = 1;
 				break;
 			}
 		default:
