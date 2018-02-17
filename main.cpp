@@ -51,55 +51,90 @@ int main()
 bool judge(int x, int y)//¼ì²éµãx×ø±ê,¼ì²éµãy×ø±ê RETURN: win=1 empty=0
 {
 	int color_source = map[x][y];
-	bool x_left = 0, x_right = 0, y_up = 0, y_down = 0,
-		slope_left_up = 0, slope_left_down = 0,
-		slope_right_up = 0, slope_right_down = 0;
+	int judge_x = 0, judge_y = 0, slope_left = 0, slope_right = 0;
 	for (int i = 1; i <= 4; i++)
 	{
-		if (map[x - i][y] != color_source)
+		if (map[x - i][y] != color_source && judge_x != -1)
 			//ºáÏò_Âß¼­×ó ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			x_left = 1;
+			judge_x++;
 		}
-		if (map[x + 1][y] != color_source)
+		else
+		{
+			judge_x = -1;
+		}
+
+		if (map[x + 1][y] != color_source && judge_x != -1)
 			//ºáÏò_Âß¼­ÓÒ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			x_right = 1;
+			judge_x++;
 		}
-		if (map[x][y - 1] != color_source)
+		else
+		{
+			judge_x = -1;
+		}
+
+		if (map[x][y - 1] != color_source && judge_y != -1)
 			//×ÝÏò_Âß¼­ÉÏ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			y_up = 1;
+			judge_y++;
 		}
-		if (map[x][y + 1] != color_source)
+		else
+		{
+			judge_y = -1;
+		}
+
+		if (map[x][y + 1] != color_source && judge_y != -1)
 			//×ÝÏò_Âß¼­ÏÂ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			y_down = 1;
+			judge_y++;
 		}
-		if (map[x - 1][y - 1] != color_source)
+		else
+		{
+			judge_y = -1;
+		}
+
+		if (map[x - 1][y - 1] != color_source && slope_left != -1)
 			//ÇãÐ±_Âß¼­×óÉÏ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			slope_left_up = 1;
+			slope_left++;
 		}
-		if (map[x - 1][y + 1] != color_source)
+		else
+		{
+			slope_left = -1;
+		}
+
+		if (map[x - 1][y + 1] != color_source && slope_right != -1)
 			//ÇãÐ±_Âß¼­×óÏÂ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			slope_left_down = 1;
+			slope_right++;
 		}
-		if (map[x + 1][y - 1] != color_source)
+		else
+		{
+			slope_right = -1;
+		}
+
+		if (map[x + 1][y - 1] != color_source && slope_right != -1)
 			//ÇãÐ±_Âß¼­ÓÒÉÏ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			slope_right_up = 1;
+			slope_right++;
 		}
-		if (map[x + 1][y + 1] != color_source)
+		else
+		{
+			slope_right = -1;
+		}
+
+		if (map[x + 1][y + 1] != color_source && slope_left != -1)
 			//ÇãÐ±_Âß¼­ÓÒÏÂ ÅÐ¶ÏÊÇ·ñÁ¬×Ó
 		{
-			slope_right_down = 1;
+			slope_left++;
+		}
+		else
+		{
+			slope_left = -1;
 		}
 	}
-	if (x_left == 0 || x_right == 0 || y_up == 0 || y_down == 0||
-		slope_left_up==0||slope_left_down==0||
-		slope_right_up==0||slope_right_down==0)//ÅÐ¶Ï»ñÊ¤
+	if (judge_x == 5 || judge_y == 5 || slope_left == 5 || slope_right == 5)//ÅÐ¶Ï»ñÊ¤
 	{
 		return 1;
 	}
@@ -182,7 +217,7 @@ void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	loca
 		case 'w':
 			{
 				loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, x, y);//»æÖÆ°×É«Æå×Ó
-				map[x][y]=2;
+				map[x][y] = 2;
 				break;
 			}
 		case 'b':
