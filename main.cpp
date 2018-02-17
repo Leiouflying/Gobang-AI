@@ -15,6 +15,7 @@ using namespace std;
 
 //Gobal variable
 int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
+MOUSEMSG m;//定义鼠标消息
 
 //function
 void version();//More detail https://www.geekdt.com/335.html
@@ -25,7 +26,7 @@ void testtools();//测试工具
 bool whofirst();//请求用户选择AI先手还是用户先手
 void clear_map();//清空棋盘地图
 bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
-
+void user_put(char color);
 
 int main()
 {
@@ -35,11 +36,12 @@ int main()
 	version();
 	if (whofirst() == 1)//AI first
 	{
-		put_piece('b', (int)rand() % 14, (int)rand() % 14);
+		put_piece('b', rand() % 14, rand() % 14);
+		user_put('w');
 	}
 	else if (whofirst == 0)//User first
 	{
-
+		user_put('b');
 	}
 	else //未知错误 From: whofirst function
 	{
@@ -47,6 +49,24 @@ int main()
 	}
 	system("pause");
 	return 0;
+}
+void user_put(char color)
+{
+	char input_x[10],input_y[10];
+	InputBox(input_x, 10, "请输入x");
+	InputBox(input_y, 10, "请输入y");
+	int user_x,user_y;
+	sscanf_s(input_x, "%d", &user_x);
+	sscanf_s(input_y, "%d", &user_y);
+	put_piece(color, user_x, user_y);
+	if (color == 'b')
+	{
+		map[user_x][user_y] = 1;
+	}
+	else
+	{
+		map[user_x][user_y] = 2;
+	}
 }
 bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 {
@@ -210,19 +230,19 @@ void create_environment()//"m"为谱纸倍数
 void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	local 0-14 only
 //棋子颜色,目标位置x轴偏移量,目标位置y轴偏移量
 {
-	x = 27 + 2.5*15.61*x - 15;//目标位置x轴的GUI位置偏移换算
-	y = 27 + 2.5*15.61*y - 15;//目标位置y轴的GUI位置偏移换算
+	int gui_x = 27 + 2.5*15.61*x - 15;//目标位置x轴的GUI位置偏移换算
+	int gui_y = 27 + 2.5*15.61*y - 15;//目标位置y轴的GUI位置偏移换算
 	switch (color)
 	{
 		case 'w':
 			{
-				loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, x, y);//绘制白色棋子
+				loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制白色棋子
 				map[x][y] = 2;
 				break;
 			}
 		case 'b':
 			{
-				loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, x, y);//绘制黑色棋子
+				loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制黑色棋子
 				map[x][y] = 1;
 				break;
 			}
