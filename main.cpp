@@ -26,13 +26,13 @@ bool whofirst();//请求用户选择AI先手还是用户先手
 void clear_map();//清空棋盘地图
 bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
 
+
 int main()
 {
 	srand((int)time(0));//Set a send of rand fuction by time
 	create_environment();
 	clear_map();	//使用前可能要清理一下map
 	version();
-	//map[1][1] = 1;
 	if (whofirst() == 1)//AI first
 	{
 		put_piece('b', (int)rand() % 14, (int)rand() % 14);
