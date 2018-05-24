@@ -39,13 +39,9 @@ int main()
 		put_piece('b', rand() % 14, rand() % 14);
 		user_put('w');
 	}
-	else if (whofirst == 0)//User first
+	else//User first -> whofirst()==0
 	{
 		user_put('b');
-	}
-	else //未知错误 From: whofirst function
-	{
-
 	}
 	system("pause");
 	return 0;
@@ -63,7 +59,15 @@ void user_put(char color)
 			user_x = (m.x - 27 + 15) / (2.5*15.61);
 			user_y = (m.y - 27 + 15) / (2.5*15.61);
 			put_piece(color, user_x, user_y);
-			break;
+			if (color == 'b')
+			{
+				map[user_x][user_y] = 1;
+			}
+			else
+			{
+				map[user_x][user_y] = 2;
+			}
+			return;
 		}
 	}
 }
@@ -233,22 +237,22 @@ void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	loca
 	int gui_y = 27 + 2.5*15.61*y - 15;//目标位置y轴的GUI位置偏移换算
 	switch (color)
 	{
-		case 'w':
-			{
-				loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制白色棋子
-				map[x][y] = 2;
-				break;
-			}
-		case 'b':
-			{
-				loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制黑色棋子
-				map[x][y] = 1;
-				break;
-			}
-		default:
-			{
-				outtext("ERROR: color error of draw_piece");//颜色参数输入错误处理 直接输出一段报错字符串
-			}
+	case 'w':
+	{
+		loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制白色棋子
+		map[x][y] = 2;
+		break;
+	}
+	case 'b':
+	{
+		loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制黑色棋子
+		map[x][y] = 1;
+		break;
+	}
+	default:
+	{
+		outtext("ERROR: color error of draw_piece");//颜色参数输入错误处理 直接输出一段报错字符串
+	}
 	}
 
 }
