@@ -52,20 +52,19 @@ int main()
 }
 void user_put(char color)
 {
-	char input_x[10],input_y[10];
-	InputBox(input_x, 10, "请输入x");
-	InputBox(input_y, 10, "请输入y");
-	int user_x,user_y;
-	sscanf_s(input_x, "%d", &user_x);
-	sscanf_s(input_y, "%d", &user_y);
-	put_piece(color, user_x, user_y);
-	if (color == 'b')
+	int user_x, user_y;
+	MOUSEMSG m;
+	while (true)
 	{
-		map[user_x][user_y] = 1;
-	}
-	else
-	{
-		map[user_x][user_y] = 2;
+		m = GetMouseMsg();
+		switch (m.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+			user_x = (m.x - 27 + 15) / (2.5*15.61);
+			user_y = (m.y - 27 + 15) / (2.5*15.61);
+			put_piece(color, user_x, user_y);
+			break;
+		}
 	}
 }
 bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
