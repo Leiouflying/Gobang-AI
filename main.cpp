@@ -16,9 +16,12 @@ using namespace std;
 //Gobal variable
 int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
 MOUSEMSG m;//定义鼠标消息
+char ai_color;
+char user_color;
 int now_x, now_y;//最后一次操作的xy坐标 棋盘逻辑型
-int ai_score[15][15][4],user_score[15][15][4];//节点评分数据库，被占用则为-1，参数分别为x轴坐标，y轴坐标，横竖左斜右斜的判断
-												//0：横	1：竖向	2：左斜	3：右斜
+int score_ai[15][15], score_user[15][15];//节点评分数据库，被占用则为-1，参数分别为x轴坐标，y轴坐标，横竖左斜右斜的判断
+												//0：横	1：竖向	2：左斜	3：右斜		注:最后一个参数暂时废弃
+
 
 //function
 void version();//More detail https://www.geekdt.com/335.html
@@ -31,6 +34,7 @@ void ClearMap();//清空棋盘地图
 bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
 void UserPut(char color);
 void AIPut(char color);
+int score(int x, int y, char color);
 
 int main()
 {
@@ -38,10 +42,9 @@ int main()
 	CreateEnvironment();
 	ClearMap();	//使用前可能要清理一下map
 	version();
-	char ai_color;
-	char user_color;
 	if (WhoFirst() == 1)//AI first
 	{
+		//设定AI先手下的位置 使用随机数
 		now_x = rand() % 14;
 		now_y = rand() % 14;
 		PutPiece('b', now_x, now_y);
@@ -56,7 +59,7 @@ int main()
 		user_color = 'b';
 	}
 
-	while(true)
+	while (true)
 	{
 		AIPut(ai_color);
 		if (judge(now_x, now_y) == 1)
@@ -64,6 +67,7 @@ int main()
 			outtext("AI获胜");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
 		}
+
 		UserPut(user_color);
 		if (judge(now_x, now_y) == 1)
 		{
@@ -77,7 +81,17 @@ int main()
 }
 void AIPut(char color)
 {
-
+	for (int m = 0; m <= 14; m++)
+	{
+		for (int n = 0; n <= 14; n++)
+		{
+			if (map[m][n] == 0)
+			{
+				score_user[m][n] += score(m, n, user_color);
+				score_ai[m][n] += score(m, n, ai_color);
+			}
+		}
+	}
 }
 void UserPut(char color)
 {
@@ -91,18 +105,174 @@ void UserPut(char color)
 			user_x = (m.x - 27 + 15) / (2.5*15.61);
 			user_y = (m.y - 27 + 15) / (2.5*15.61);
 			PutPiece(color, user_x, user_y);
-			if (color == 'b')
-			{
-				map[user_x][user_y] = 1;
-			}
-			else
-			{
-				map[user_x][user_y] = 2;
-			}
 			now_x = user_x;
 			now_y = user_y;
 			return;
 		}
+	}
+}
+int score(int x, int y, char color)
+{
+	//int score(int m, int n, int k)//mn为坐标,k为判断是谁下的
+	//int i, j, p = 0, q = 0, b[4] = { 0 }, x = 0, shu, heng, zuoxie, youxie;
+	int color_of_map, map_blank[4] = { 0 }, map_friend[4] = { 0 };//0：横		1：竖向		2：左斜		3：右斜
+	if (color == 'b')
+	{
+		color_of_map = 1;
+	}
+	else
+		//即颜色为白色'w'
+	{
+		color_of_map = 2;
+	}
+	//横向_右侧
+	for (int i = x; i < x + 5, i < 15; i++)
+	{
+		if (map[i][y] != color_of_map)
+		{
+			if (map[i][y] == 0)
+			{
+				map_blank[0]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[0]++;
+		}
+	}
+	//横向_左侧
+	for (int i = x - 1; i > x - 5, i > 0; i--)
+	{
+		if (map[i][y] != color_of_map)
+		{
+			if (map[i][y] == 0)
+			{
+				map_blank[0]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[0]++;
+		}
+	}
+	//纵向_右侧
+	for (int i = y; i < y + 5, i < 15; i++)
+	{
+		if (map[x][i] != color_of_map)
+		{
+			if (map[x][i] == 0)
+			{
+				map_blank[1]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[1]++;
+		}
+	}
+	//纵向_左侧
+	for (int i = y - 1; i > y - 5, i >= 0; i++)
+	{
+		if (map[x][i] != color_of_map)
+		{
+			if (map[x][i] == 0)
+			{
+				map_blank[1]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[1]++;
+		}
+	}
+	//右斜_右	右上侧
+	for (int i = x, u = y; i < 15, u < 15, i < x + 5, u < y + 5; i++, u++)
+	{
+		if (map[i][u] != color_of_map)
+		{
+			if (map[i][u] == 0)
+			{
+				map_blank[3]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[3]++;
+		}
+	}
+	//右斜_左	左下侧
+	for (int i = x - 1, u = y - 1; i > 0, u > 0, i > x - 5, u > y - 5; i--, u--)
+	{
+		if (map[i][u] != color_of_map)
+		{
+			if (map[i][u] == 0)
+			{
+				map_blank[3]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[3]++;
+		}
+	}
+	//左斜_左	左上侧
+	for (int i = x, u = y; i > 0, u<15, i>x - 5, u < y + 5; i--, u++)
+	{
+		if (map[i][u] != color_of_map)
+		{
+			if (map[i][u] == 0)
+			{
+				map_blank[2]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[2]++;
+		}
+	}
+	//左斜_右	右下侧
+	for (int i = x + 1, u = y - 1; i < 15, u>0, i<x + 5, u>y - 5; i++, u--)
+	{
+		if (map[i][u] != color_of_map)
+		{
+			if (map[i][u] == 0)
+			{
+				map_blank[2]++;
+			}
+			break;
+		}
+		else
+		{
+			map_friend[2]++;
+		}
+	}
+	if (map_friend[0]>4 || map_friend[1]>4 || map_friend[2]>4 || map_friend[3]>4)
+	{
+		return 100;
+	}
+	else
+	{
+		int max=map_friend[0]+map_blank[0];
+		if (map_friend[1] + map_blank[1] > max)
+		{
+			max = map_friend[1] + map_blank[1];
+		}
+		if (map_friend[2] + map_blank[2] > max)
+		{
+			max = map_friend[2] + map_blank[2];
+		}
+		if (map_friend[3] + map_blank[3] > max)
+		{
+			max = map_friend[3] + map_blank[3];
+		}
+		return max;
 	}
 }
 bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
@@ -219,6 +389,8 @@ void ClearMap()
 		for (int n = 0; n <= 14; n++)
 		{
 			map[m][n] = 0;
+			score_ai[m][n] = 0;
+			score_user[m][n] = 0;
 		}
 	}
 }
