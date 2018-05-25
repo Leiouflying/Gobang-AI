@@ -17,52 +17,54 @@ using namespace std;
 int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
 MOUSEMSG m;//定义鼠标消息
 int now_x, now_y;//最后一次操作的xy坐标 棋盘逻辑型
+int ai_score[15][15][4],user_score[15][15][4];//节点评分数据库，被占用则为-1，参数分别为x轴坐标，y轴坐标，横竖左斜右斜的判断
+												//0：横	1：竖向	2：左斜	3：右斜
 
 //function
 void version();//More detail https://www.geekdt.com/335.html
-void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);//绘制透明贴图
-void create_environment();//构建五子棋对弈环境
-void put_piece(char color, int x, int y);//绘制棋子 映射为GUI
-void testtools();//测试工具
-bool whofirst();//请求用户选择AI先手还是用户先手
-void clear_map();//清空棋盘地图
+void LoadimageTransparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y);//绘制透明贴图
+void CreateEnvironment();//构建五子棋对弈环境
+void PutPiece(char color, int x, int y);//绘制棋子 映射为GUI
+void TestTools();//测试工具
+bool WhoFirst();//请求用户选择AI先手还是用户先手
+void ClearMap();//清空棋盘地图
 bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
-void user_put(char color);
-void ai_put(char color);
+void UserPut(char color);
+void AIPut(char color);
 
 int main()
 {
 	srand((int)time(0));//Set a send of rand fuction by time
-	create_environment();
-	clear_map();	//使用前可能要清理一下map
+	CreateEnvironment();
+	ClearMap();	//使用前可能要清理一下map
 	version();
 	char ai_color;
 	char user_color;
-	if (whofirst() == 1)//AI first
+	if (WhoFirst() == 1)//AI first
 	{
 		now_x = rand() % 14;
 		now_y = rand() % 14;
-		put_piece('b', now_x, now_y);
-		user_put('w');
+		PutPiece('b', now_x, now_y);
+		UserPut('w');
 		ai_color = 'b';
 		user_color = 'w';
 	}
-	else//User first -> whofirst()==0
+	else//User first -> WhoFirst()==0
 	{
-		user_put('b');
+		UserPut('b');
 		ai_color = 'w';
 		user_color = 'b';
 	}
 
 	while(true)
 	{
-		ai_put(ai_color);
+		AIPut(ai_color);
 		if (judge(now_x, now_y) == 1)
 		{
 			outtext("AI获胜");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
 		}
-		user_put(user_color);
+		UserPut(user_color);
 		if (judge(now_x, now_y) == 1)
 		{
 			outtext("您获胜了");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -73,11 +75,11 @@ int main()
 	system("pause");
 	return 0;
 }
-void ai_put(char color)
+void AIPut(char color)
 {
 
 }
-void user_put(char color)
+void UserPut(char color)
 {
 	int user_x, user_y;
 	while (true)
@@ -88,7 +90,7 @@ void user_put(char color)
 		case WM_LBUTTONDOWN:
 			user_x = (m.x - 27 + 15) / (2.5*15.61);
 			user_y = (m.y - 27 + 15) / (2.5*15.61);
-			put_piece(color, user_x, user_y);
+			PutPiece(color, user_x, user_y);
 			if (color == 'b')
 			{
 				map[user_x][user_y] = 1;
@@ -198,7 +200,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 		return 0;
 	}
 }
-bool whofirst()//RETURN: AI first: 1	User first: 0
+bool WhoFirst()//RETURN: AI first: 1	User first: 0
 {
 	HWND hwnd = GetHWnd();
 	if (MessageBox(hwnd, "Let AI first or not ?", "Select Who First", MB_YESNO | MB_ICONQUESTION) == IDYES)//来自WinUser API(MFC)的函数，判断谁先手
@@ -210,7 +212,7 @@ bool whofirst()//RETURN: AI first: 1	User first: 0
 		return 0;
 	}
 }
-void clear_map()
+void ClearMap()
 {
 	for (int m = 0; m <= 14; m++)
 	{
@@ -220,7 +222,7 @@ void clear_map()
 		}
 	}
 }
-void loadimage_transparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y)//*.bmp file only
+void LoadimageTransparent(LPCTSTR res_Type, LPCTSTR res_Name, COLORREF color, int width, int height, int x, int y)//*.bmp file only
 //目标路径,目标宽度,目标高度,透明色,目标位置x轴偏移量,目标位置y轴偏移量
 {
 	IMAGE img;
@@ -243,7 +245,7 @@ void version()
 	outtext(version);
 	//printf("VERSION: %d.%d.%d\n", VERSION_X, VERSION_Y, VERSION_Z); //终端界面输出的代码（无需启用）
 }
-void create_environment()//"m"为谱纸倍数
+void CreateEnvironment()//"m"为谱纸倍数
 {
 	initgraph(800, 600);//构建绘图窗口
 
@@ -262,7 +264,7 @@ void create_environment()//"m"为谱纸倍数
 	}
 
 }
-void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	local 0-14 only
+void PutPiece(char color, int x, int y)//color w:white_piece b:black_piece	local 0-14 only
 //棋子颜色,目标位置x轴偏移量,目标位置y轴偏移量
 {
 	int gui_x = 27 + 2.5*15.61*x - 15;//目标位置x轴的GUI位置偏移换算
@@ -271,13 +273,13 @@ void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	loca
 	{
 	case 'w':
 	{
-		loadimage_transparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制白色棋子
+		LoadimageTransparent("IMAGE", "IMAGE_WHITEPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制白色棋子
 		map[x][y] = 2;
 		break;
 	}
 	case 'b':
 	{
-		loadimage_transparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制黑色棋子
+		LoadimageTransparent("IMAGE", "IMAGE_BLACKPiece", 0xffffff, 30, 30, gui_x, gui_y);//绘制黑色棋子
 		map[x][y] = 1;
 		break;
 	}
@@ -288,7 +290,7 @@ void put_piece(char color, int x, int y)//color w:white_piece b:black_piece	loca
 	}
 
 }
-void testtools()
+void TestTools()
 {
 	//棋盘边界测试
 	int x1 = 27, y1 = 27;
@@ -296,7 +298,7 @@ void testtools()
 	int x2 = 574, y2 = 571;
 	fillrectangle(x2, y2, x2 - 20, y2 - 10);
 	//绘制棋盘外框线（素材中已提供，暂不重复绘制防止误差）
-	int m = 15.61;//create_environment()函数中会提供
+	int m = 15.61;//CreateEnvironment()函数中会提供
 	line(27, 27, 2.5 * m * 14 + 27, 27);//上 横
 	line(27, 571, 2.5 * m * 14 + 27, 571);//下 横
 	line(27, 27, 27, 2.5 * m * 14 + 27);//左 竖
@@ -306,7 +308,7 @@ void testtools()
 	{
 		for (int m = 0; m <= 15; m++)
 		{
-			put_piece('b', i, m);
+			PutPiece('b', i, m);
 		}
 	}
 }
