@@ -5,6 +5,7 @@
 #include <graphics.h>
 #include <conio.h>
 #include <time.h>
+#include <stdlib.h>
 #pragma comment( lib, "MSIMG32.LIB")// 引用该库才能使用 TransparentBlt 函数
 
 #define VERSION_X "0"
@@ -59,6 +60,8 @@ int main()
 		user_color = 'b';
 	}
 
+	FILE *stream;
+	freopen_s(&stream, "E:\\test.txt", "w", stdout);
 	while (true)
 	{
 		AIPut(ai_color);
@@ -74,6 +77,15 @@ int main()
 			outtext("您获胜了");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
 		}
+		for (int m = 0; m <= 14; m++)
+		{
+			for (int n = 0; n <= 14; n++)
+			{
+				cout << map[m][n] << "\t";
+			}
+			cout << endl;
+		}
+		cout << "========================================" << endl;
 	}
 	outtext("结束了");//临时代码！！！！！！！！！！！！！！！！！！！！！！！！
 	system("pause");
@@ -81,6 +93,7 @@ int main()
 }
 void AIPut(char color)
 {
+	//执行估值 遍历全地图
 	for (int m = 0; m <= 14; m++)
 	{
 		for (int n = 0; n <= 14; n++)
@@ -89,9 +102,30 @@ void AIPut(char color)
 			{
 				score_user[m][n] += score(m, n, user_color);
 				score_ai[m][n] += score(m, n, ai_color);
+				outtext("");
 			}
 		}
 	}
+	int max_x, max_y, max = 0;//最高分的坐标以及最高分的分数
+	for (int m = 0, n = 0; m < 15, n < 15; m++, n++)
+	{
+		if (score_user[m][n] > max)
+		{
+			max = score_user[m][n];
+			max_x = m;
+			max_y = n;
+		}
+		if (score_ai[m][n] > max)
+		{
+			max = score_ai[m][n];
+			max_x = m;
+			max_y = n;
+		}
+	}
+	outtext(max + 48);
+	PutPiece(ai_color, max_x, max_y);
+	now_x = max_x;
+	now_y = max_y;
 }
 void UserPut(char color)
 {
@@ -142,7 +176,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//横向_左侧
-	for (int i = x - 1; i > x - 5, i > 0; i--)
+	for (int i = x - 1; i > x - 5, i >= 0; i--)
 	{
 		if (map[i][y] != color_of_map)
 		{
@@ -206,7 +240,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//右斜_左	左下侧
-	for (int i = x - 1, u = y - 1; i > 0, u > 0, i > x - 5, u > y - 5; i--, u--)
+	for (int i = x - 1, u = y - 1; i >= 0, u >= 0, i > x - 5, u > y - 5; i--, u--)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -222,7 +256,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_左	左上侧
-	for (int i = x, u = y; i > 0, u<15, i>x - 5, u < y + 5; i--, u++)
+	for (int i = x, u = y; i >= 0, u<15, i > x - 5, u < y + 5; i--, u++)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -238,7 +272,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_右	右下侧
-	for (int i = x + 1, u = y - 1; i < 15, u>0, i<x + 5, u>y - 5; i++, u--)
+	for (int i = x + 1, u = y - 1; i < 15, u >= 0, i<x + 5, u > y - 5; i++, u--)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -253,24 +287,31 @@ int score(int x, int y, char color)
 			map_friend[2]++;
 		}
 	}
-	if (map_friend[0]>4 || map_friend[1]>4 || map_friend[2]>4 || map_friend[3]>4)
+	if (map_friend[0] > 4 || map_friend[1] > 4 || map_friend[2] > 4 || map_friend[3] > 4)
 	{
 		return 100;
 	}
 	else
 	{
-		int max=map_friend[0]+map_blank[0];
-		if (map_friend[1] + map_blank[1] > max)
+		for (int i = 0; i < 4; i++)
 		{
-			max = map_friend[1] + map_blank[1];
+			if (map_blank[i] == 0)
+			{
+				map_blank[i] = -20;
+			}
 		}
-		if (map_friend[2] + map_blank[2] > max)
+		int max = map_friend[0] + map_blank[0];
+		if ((map_friend[1] + map_blank[1]) > max)
 		{
-			max = map_friend[2] + map_blank[2];
+			max = (map_friend[1] + map_blank[1]);
 		}
-		if (map_friend[3] + map_blank[3] > max)
+		if ((map_friend[2] + map_blank[2]) > max)
 		{
-			max = map_friend[3] + map_blank[3];
+			max = (map_friend[2] + map_blank[2]);
+		}
+		if ((map_friend[3] + map_blank[3]) > max)
+		{
+			max = (map_friend[3] + map_blank[3]);
 		}
 		return max;
 	}

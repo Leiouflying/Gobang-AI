@@ -1,13 +1,13 @@
 ﻿  main.cpp
-g:\gobang-ai\gobang-ai\main.cpp(105): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(106): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(434): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(435): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(442): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(443): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(473): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(474): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(139): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(140): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
 g:\gobang-ai\gobang-ai\main.cpp(475): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
 g:\gobang-ai\gobang-ai\main.cpp(476): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-g:\gobang-ai\gobang-ai\main.cpp(477): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(483): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(484): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(514): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(515): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(516): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(517): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+g:\gobang-ai\gobang-ai\main.cpp(518): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
   Gobang-AI.vcxproj -> G:\Gobang-AI\Gobang-AI\x64\Debug\Gobang-AI.exe
