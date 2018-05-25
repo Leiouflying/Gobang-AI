@@ -16,6 +16,7 @@ using namespace std;
 //Gobal variable
 int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
 MOUSEMSG m;//定义鼠标消息
+int now_x, now_y;//最后一次操作的xy坐标 棋盘逻辑型
 
 //function
 void version();//More detail https://www.geekdt.com/335.html
@@ -27,6 +28,7 @@ bool whofirst();//请求用户选择AI先手还是用户先手
 void clear_map();//清空棋盘地图
 bool judge(int x, int y);//检查该检查点是否构成一方获胜的条件
 void user_put(char color);
+void ai_put(char color);
 
 int main()
 {
@@ -34,22 +36,50 @@ int main()
 	create_environment();
 	clear_map();	//使用前可能要清理一下map
 	version();
+	char ai_color;
+	char user_color;
 	if (whofirst() == 1)//AI first
 	{
-		put_piece('b', rand() % 14, rand() % 14);
+		now_x = rand() % 14;
+		now_y = rand() % 14;
+		put_piece('b', now_x, now_y);
 		user_put('w');
+		ai_color = 'b';
+		user_color = 'w';
 	}
 	else//User first -> whofirst()==0
 	{
 		user_put('b');
+		ai_color = 'w';
+		user_color = 'b';
 	}
+
+	while(true)
+	{
+		ai_put(ai_color);
+		if (judge(now_x, now_y) == 1)
+		{
+			outtext("AI获胜");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			break;
+		}
+		user_put(user_color);
+		if (judge(now_x, now_y) == 1)
+		{
+			outtext("您获胜了");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			break;
+		}
+	}
+	outtext("结束了");//临时代码！！！！！！！！！！！！！！！！！！！！！！！！
 	system("pause");
 	return 0;
+}
+void ai_put(char color)
+{
+
 }
 void user_put(char color)
 {
 	int user_x, user_y;
-	MOUSEMSG m;
 	while (true)
 	{
 		m = GetMouseMsg();
@@ -67,6 +97,8 @@ void user_put(char color)
 			{
 				map[user_x][user_y] = 2;
 			}
+			now_x = user_x;
+			now_y = user_y;
 			return;
 		}
 	}
