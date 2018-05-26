@@ -47,8 +47,8 @@ int main()
 	if (WhoFirst() == 1)//AI first
 	{
 		//设定AI先手下的位置 使用随机数
-		now_x = rand() % 14;
-		now_y = rand() % 14;
+		now_x = rand() % 5 + 5;
+		now_y = rand() % 5 + 5;
 		PutPiece('b', now_x, now_y);
 		UserPut('w');
 		ai_color = 'b';
@@ -88,7 +88,7 @@ int main()
 		}
 		cout << "========================================" << endl;
 	}
-	outtext("结束了");//临时代码！！！！！！！！！！！！！！！！！！！！！！！！
+	outtext("游戏结束");//临时代码！！！！！！！！！！！！！！！！！！！！！！！！
 	system("pause");
 	return 0;
 }
@@ -121,9 +121,11 @@ void AIPut(char color)
 			if (map[m][n] == 0)
 			{
 				map[m][n] = user_mapcolor;
-				score_user[m][n] += score_copy(m, n, 1);
+				score_user[m][n] += score(m, n, user_color);
+				//score_user[m][n] += score_copy(m, n, 1);
 				map[m][n] = ai_mapcolor;
-				score_ai[m][n] += score_copy(m, n, 2);
+				score_ai[m][n] += score(m, n, ai_color);
+				//score_ai[m][n] += score_copy(m, n, 2);
 				map[m][n] = 0;
 			}
 		}
@@ -331,7 +333,7 @@ int score(int x, int y, char color)
 		color_of_map = 2;
 	}
 	//横向_右侧
-	for (int i = x; i <= x + 5, i < 15; i++)
+	for (int i = x; i < x + 5, i < 15; i++)
 	{
 		if (map[i][y] != color_of_map)
 		{
@@ -347,7 +349,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//横向_左侧
-	for (int i = x - 1; i >= x - 5, i >= 0; i--)
+	for (int i = x - 1; i > x - 5, i >= 0; i--)
 	{
 		if (map[i][y] != color_of_map)
 		{
@@ -363,7 +365,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//纵向_右侧
-	for (int i = y; i <= y + 5, i < 15; i++)
+	for (int i = y; i < y + 5, i < 15; i++)
 	{
 		if (map[x][i] != color_of_map)
 		{
@@ -379,7 +381,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//纵向_左侧
-	for (int i = y - 1; i >= y - 5, i >= 0; i++)
+	for (int i = y - 1; i > y - 5, i >= 0; i++)
 	{
 		if (map[x][i] != color_of_map)
 		{
@@ -395,7 +397,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//右斜_右	右上侧
-	for (int i = x, u = y; i < 15, u < 15, i <= x + 5, u <= y + 5; i++, u++)
+	for (int i = x, u = y; i < 15, u < 15, i < x + 5, u < y + 5; i++, u++)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -411,7 +413,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//右斜_左	左下侧
-	for (int i = x - 1, u = y - 1; i >= 0, u >= 0, i >= x - 5, u >= y - 5; i--, u--)
+	for (int i = x - 1, u = y - 1; i >= 0, u >= 0, i > x - 5, u > y - 5; i--, u--)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -427,7 +429,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_左	左上侧
-	for (int i = x, u = y; i >= 0, u < 15, i >= x - 5, u <= y + 5; i--, u++)
+	for (int i = x, u = y; i >= 0, u < 15, i > x - 5, u <y + 5; i--, u++)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -443,7 +445,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_右	右下侧
-	for (int i = x + 1, u = y - 1; i < 15, u >= 0, i <= x + 5, u >= y - 5; i++, u--)
+	for (int i = x + 1, u = y - 1; i < 15, u >= 0, i < x + 5, u > y - 5; i++, u--)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -472,17 +474,17 @@ int score(int x, int y, char color)
 			}
 		}
 		int max = map_friend[0] + map_blank[0];
-		if ((map_friend[1] + map_blank[1]) > max)
+		if (map_friend[1] + map_blank[1] > max)
 		{
-			max = (map_friend[1] + map_blank[1]);
+			max = map_friend[1] + map_blank[1];
 		}
-		if ((map_friend[2] + map_blank[2]) > max)
+		if (map_friend[2] + map_blank[2] > max)
 		{
-			max = (map_friend[2] + map_blank[2]);
+			max = map_friend[2] + map_blank[2];
 		}
-		if ((map_friend[3] + map_blank[3]) > max)
+		if (map_friend[3] + map_blank[3] > max)
 		{
-			max = (map_friend[3] + map_blank[3]);
+			max = map_friend[3] + map_blank[3];
 		}
 		return max;
 	}
@@ -491,89 +493,91 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 {
 	int color_source = map[x][y];
 	int judge_x = 0, judge_y = 0, slope_left = 0, slope_right = 0;
+	bool judge_x_a = 0, judge_x_b = 0, judge_y_a = 0, judge_y_b = 0,
+		slope_left_a = 0, slope_left_b = 0, slope_right_a = 0, slope_right_b = 0;
 	for (int i = 1; i <= 4; i++)
 	{
-		if (map[x - i][y] != color_source && judge_x != -1)
+		if (map[x - i][y] == color_source && judge_x_a != 1)
 			//横向_逻辑左 判断是否连子
 		{
 			judge_x++;
 		}
 		else
 		{
-			judge_x = -1;
+			judge_x_a = 1;
 		}
 
-		if (map[x + 1][y] != color_source && judge_x != -1)
+		if (map[x + i][y] == color_source && judge_x_b != 1)
 			//横向_逻辑右 判断是否连子
 		{
 			judge_x++;
 		}
 		else
 		{
-			judge_x = -1;
+			judge_x_b = 1;
 		}
 
-		if (map[x][y - 1] != color_source && judge_y != -1)
+		if (map[x][y - i] == color_source && judge_y_a != 1)
 			//纵向_逻辑上 判断是否连子
 		{
 			judge_y++;
 		}
 		else
 		{
-			judge_y = -1;
+			judge_y_a = 1;
 		}
 
-		if (map[x][y + 1] != color_source && judge_y != -1)
+		if (map[x][y + i] == color_source && judge_y_b != 1)
 			//纵向_逻辑下 判断是否连子
 		{
 			judge_y++;
 		}
 		else
 		{
-			judge_y = -1;
+			judge_y_b = 1;
 		}
 
-		if (map[x - 1][y - 1] != color_source && slope_left != -1)
+		if (map[x - i][y - i] == color_source && slope_left_a != 1)
 			//倾斜_逻辑左上 判断是否连子
 		{
 			slope_left++;
 		}
 		else
 		{
-			slope_left = -1;
+			slope_left_a = 1;
 		}
 
-		if (map[x - 1][y + 1] != color_source && slope_right != -1)
+		if (map[x - i][y + i] == color_source && slope_right_b != 1)
 			//倾斜_逻辑左下 判断是否连子
 		{
 			slope_right++;
 		}
 		else
 		{
-			slope_right = -1;
+			slope_right_b = -1;
 		}
 
-		if (map[x + 1][y - 1] != color_source && slope_right != -1)
+		if (map[x + i][y - i] == color_source && slope_right_a != 1)
 			//倾斜_逻辑右上 判断是否连子
 		{
 			slope_right++;
 		}
 		else
 		{
-			slope_right = -1;
+			slope_right_a = 1;
 		}
 
-		if (map[x + 1][y + 1] != color_source && slope_left != -1)
+		if (map[x + i][y + i] == color_source && slope_left_b != 1)
 			//倾斜_逻辑右下 判断是否连子
 		{
 			slope_left++;
 		}
 		else
 		{
-			slope_left = -1;
+			slope_left_b = 1;
 		}
 	}
-	if (judge_x == 5 || judge_y == 5 || slope_left == 5 || slope_right == 5)//判断获胜
+	if (judge_x >= 4 || judge_y >= 4 || slope_left >= 4 || slope_right >= 4)//判断获胜
 	{
 		return 1;
 	}
