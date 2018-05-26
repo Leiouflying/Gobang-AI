@@ -16,7 +16,7 @@ using namespace std;
 
 //Gobal variable
 int map[15][15];//0:空坐标	1:黑棋子	2:白棋子
-MOUSEMSG m;//定义鼠标消息
+MOUSEMSG mouse_msg;//定义鼠标消息
 char ai_color;
 char user_color;
 int now_x, now_y;//最后一次操作的xy坐标 棋盘逻辑型
@@ -78,6 +78,7 @@ int main()
 			outtext("您获胜了");//临时代码!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			break;
 		}
+		//LOG输出 测试代码
 		for (int m = 0; m <= 14; m++)
 		{
 			for (int n = 0; n <= 14; n++)
@@ -89,6 +90,16 @@ int main()
 		cout << "========================================" << endl;
 	}
 	outtext("游戏结束");//临时代码！！！！！！！！！！！！！！！！！！！！！！！！
+	cout << "THE END=====================" << endl;
+	for (int m = 0; m <= 14; m++)
+	{
+		for (int n = 0; n <= 14; n++)
+		{
+			cout << map[m][n] << "\t";
+		}
+		cout << endl;
+	}
+	_getch();
 	system("pause");
 	return 0;
 }
@@ -121,16 +132,16 @@ void AIPut(char color)
 			if (map[m][n] == 0)
 			{
 				map[m][n] = user_mapcolor;
-				score_user[m][n] += score(m, n, user_color);
-				//score_user[m][n] += score_copy(m, n, 1);
+				//score_user[m][n] += score(m, n, user_color);
+				score_user[m][n] += score_copy(m, n, 1);
 				map[m][n] = ai_mapcolor;
-				score_ai[m][n] += score(m, n, ai_color);
-				//score_ai[m][n] += score_copy(m, n, 2);
+				//score_ai[m][n] += score(m, n, ai_color);
+				score_ai[m][n] += score_copy(m, n, 2);
 				map[m][n] = 0;
 			}
 		}
 	}
-	int max_x=0, max_y=0, max = 0;//最高分的坐标以及最高分的分数
+	int max_x = 0, max_y = 0, max = 0;//最高分的坐标以及最高分的分数
 	for (int m = 0; m < 15; m++)
 	{
 		for (int n = 0; n < 15; n++)
@@ -158,12 +169,12 @@ void UserPut(char color)
 	int user_x, user_y;
 	while (true)
 	{
-		m = GetMouseMsg();
-		switch (m.uMsg)
+		mouse_msg = GetMouseMsg();
+		switch (mouse_msg.uMsg)
 		{
 		case WM_LBUTTONDOWN:
-			user_x = (m.x - 27 + 15) / (2.5*15.61);
-			user_y = (m.y - 27 + 15) / (2.5*15.61);
+			user_x = (mouse_msg.x - 27 + 15) / (2.5*15.61);
+			user_y = (mouse_msg.y - 27 + 15) / (2.5*15.61);
 			PutPiece(color, user_x, user_y);
 			now_x = user_x;
 			now_y = user_y;
@@ -429,7 +440,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_左	左上侧
-	for (int i = x, u = y; i >= 0, u < 15, i > x - 5, u <y + 5; i--, u++)
+	for (int i = x, u = y; i >= 0, u < 15, i > x - 5, u < y + 5; i--, u++)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -497,7 +508,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 		slope_left_a = 0, slope_left_b = 0, slope_right_a = 0, slope_right_b = 0;
 	for (int i = 1; i <= 4; i++)
 	{
-		if (map[x - i][y] == color_source && judge_x_a != 1)
+		if (map[x - i][y] == color_source && judge_x_a != 1 && x - i >= 0)
 			//横向_逻辑左 判断是否连子
 		{
 			judge_x++;
@@ -507,7 +518,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			judge_x_a = 1;
 		}
 
-		if (map[x + i][y] == color_source && judge_x_b != 1)
+		if (map[x + i][y] == color_source && judge_x_b != 1 && x + i < 15)
 			//横向_逻辑右 判断是否连子
 		{
 			judge_x++;
@@ -517,7 +528,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			judge_x_b = 1;
 		}
 
-		if (map[x][y - i] == color_source && judge_y_a != 1)
+		if (map[x][y - i] == color_source && judge_y_a != 1 && y - i >= 0)
 			//纵向_逻辑上 判断是否连子
 		{
 			judge_y++;
@@ -527,7 +538,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			judge_y_a = 1;
 		}
 
-		if (map[x][y + i] == color_source && judge_y_b != 1)
+		if (map[x][y + i] == color_source && judge_y_b != 1 && y + i < 15)
 			//纵向_逻辑下 判断是否连子
 		{
 			judge_y++;
@@ -537,7 +548,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			judge_y_b = 1;
 		}
 
-		if (map[x - i][y - i] == color_source && slope_left_a != 1)
+		if (map[x - i][y - i] == color_source && slope_left_a != 1 && x - i >= 0 && y - i < 15)
 			//倾斜_逻辑左上 判断是否连子
 		{
 			slope_left++;
@@ -547,7 +558,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			slope_left_a = 1;
 		}
 
-		if (map[x - i][y + i] == color_source && slope_right_b != 1)
+		if (map[x - i][y + i] == color_source && slope_right_b != 1 && x - i >= 0 && y + i < 15)
 			//倾斜_逻辑左下 判断是否连子
 		{
 			slope_right++;
@@ -557,7 +568,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			slope_right_b = -1;
 		}
 
-		if (map[x + i][y - i] == color_source && slope_right_a != 1)
+		if (map[x + i][y - i] == color_source && slope_right_a != 1 && x + i < 15 && y - i >= 0)
 			//倾斜_逻辑右上 判断是否连子
 		{
 			slope_right++;
@@ -567,7 +578,7 @@ bool judge(int x, int y)//检查点x坐标,检查点y坐标 RETURN: win=1 empty=0
 			slope_right_a = 1;
 		}
 
-		if (map[x + i][y + i] == color_source && slope_left_b != 1)
+		if (map[x + i][y + i] == color_source && slope_left_b != 1 && x + i < 15 && y + i < 15)
 			//倾斜_逻辑右下 判断是否连子
 		{
 			slope_left++;
