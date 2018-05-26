@@ -125,7 +125,6 @@ void AIPut(char color)
 				map[m][n] = ai_mapcolor;
 				score_ai[m][n] += score_copy(m, n, 2);
 				map[m][n] = 0;
-				outtext("");
 			}
 		}
 	}
