@@ -114,7 +114,7 @@ void AIPut(char color)
 		user_mapcolor = 1;
 	}
 	//执行估值 遍历全地图
-	for (int m = 10; m <= 14; m++)
+	for (int m = 0; m <= 14; m++)
 	{
 		for (int n = 0; n <= 14; n++)
 		{
