@@ -37,6 +37,7 @@ void UserPut(char color);
 void AIPut(char color);
 int score(int x, int y, char color);
 
+int score_copy(int m, int n, int k);//mn为坐标,k为判断是谁下的
 int main()
 {
 	srand((int)time(0));//Set a send of rand fuction by time
@@ -93,36 +94,60 @@ int main()
 }
 void AIPut(char color)
 {
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			score_user[i][j] = 0;
+			score_ai[i][j] = 0;
+		}
+	}
+	int user_mapcolor, ai_mapcolor;
+	if (color == 'b')
+	{
+		ai_mapcolor = 1;
+		user_mapcolor = 2;
+	}
+	else
+	{
+		ai_mapcolor = 2;
+		user_mapcolor = 1;
+	}
 	//执行估值 遍历全地图
-	for (int m = 0; m <= 14; m++)
+	for (int m = 10; m <= 14; m++)
 	{
 		for (int n = 0; n <= 14; n++)
 		{
 			if (map[m][n] == 0)
 			{
-				score_user[m][n] += score(m, n, user_color);
-				score_ai[m][n] += score(m, n, ai_color);
+				map[m][n] = user_mapcolor;
+				score_user[m][n] += score_copy(m, n, 1);
+				map[m][n] = ai_mapcolor;
+				score_ai[m][n] += score_copy(m, n, 2);
+				map[m][n] = 0;
 				outtext("");
 			}
 		}
 	}
-	int max_x, max_y, max = 0;//最高分的坐标以及最高分的分数
-	for (int m = 0, n = 0; m < 15, n < 15; m++, n++)
+	int max_x=0, max_y=0, max = 0;//最高分的坐标以及最高分的分数
+	for (int m = 0; m < 15; m++)
 	{
-		if (score_user[m][n] > max)
+		for (int n = 0; n < 15; n++)
 		{
-			max = score_user[m][n];
-			max_x = m;
-			max_y = n;
-		}
-		if (score_ai[m][n] > max)
-		{
-			max = score_ai[m][n];
-			max_x = m;
-			max_y = n;
+			if (score_user[m][n] > max)
+			{
+				max = score_user[m][n];
+				max_x = m;
+				max_y = n;
+			}
+			if (score_ai[m][n] > max)
+			{
+				max = score_ai[m][n];
+				max_x = m;
+				max_y = n;
+			}
 		}
 	}
-	outtext(max + 48);
 	PutPiece(ai_color, max_x, max_y);
 	now_x = max_x;
 	now_y = max_y;
@@ -145,11 +170,158 @@ void UserPut(char color)
 		}
 	}
 }
+int score_copy(int m, int n, int k)//mn为坐标,k为判断是谁下的
+{
+	int i, j, p = 0, q = 0, b[4] = { 0 }, x = 0, shu, heng, zuoxie, youxie;
+	char s;
+	if (k == 1)
+		s = 1;
+	else
+		s = 2;
+	for (i = m; i < m + 5, i < 15; i++)
+	{
+		if (map[i][n] != s)
+		{
+			if (map[i][n] == 0)
+			{
+				b[0]++;
+			}
+			break;
+		}
+		else
+			p++;
+	}
+	for (i = m - 1; i > m - 5, i > 0; i--)
+	{
+		if (map[i][n] != s)
+		{
+			if (map[i][n] == 0)
+			{
+				b[0]++;
+			}
+			break;
+		}
+		else
+			q++;
+	}
+	heng = p + q;
+	for (j = n, p = 0; j < n + 5, j < 15; j++)
+	{
+		if (map[m][j] != s)
+		{
+			if (map[m][j] == 0)
+			{
+				b[1]++;
+			}
+			break;
+		}
+		else
+			p++;
+	}
+	for (j = n - 1, q = 0; j > n - 5, j > 0; j--)
+	{
+		if (map[m][j] != s)
+		{
+			if (map[i][n] == 0)
+			{
+				b[1]++;
+			}
+			break;
+		}
+		else
+			q++;
+	}
+	shu = p + q;
+	for (i = m, j = n, p = 0; i < 15, i < m + 5, j < 15; i++, j++)
+	{
+		if (map[i][j] != s)
+		{
+			if (map[i][j] == 0)
+			{
+				b[2]++;
+			}
+			break;
+		}
+		else
+			p++;
+	}
+	for (i = m - 1, j = n - 1, q = 0; i >= 0, i > m - 5, j > 0; i--, j--)
+	{
+		if (map[i][j] != s)
+		{
+			if (map[i][j] == 0)
+			{
+				b[2]++;
+			}
+			break;
+		}
+		else
+			q++;
+	}
+	zuoxie = p + q;
+	for (i = m, j = n, p = 0; i >= 0, i > m - 5, j < 16; i--, j++)
+	{
+		if (map[i][j] != s)
+		{
+			if (map[i][j] == 0)
+			{
+				b[3]++;
+			}
+			break;
+		}
+		else
+			p++;
+	}
+	for (i = m + 1, j = n - 1, q = 0; i < 15, i < m + 5, j>0; i++, j--)
+	{
+		if (map[i][j] != s)
+		{
+			if (map[i][j] == 0)
+			{
+				b[3]++;
+			}
+			break;
+		}
+		else
+			q++;
+	}
+	youxie = p + q;
+	if (heng > 4 || shu > 4 || zuoxie > 4 || youxie > 4)
+	{
+		x = 100;
+	}
+	else
+	{
+		for (i = 0; i < 4; i++)
+		{
+			if (b[i] == 0)
+			{
+				b[i] = -20;
+			}
+		}
+		//heng...求人落子有多少 b[]求空的有多少
+		x = heng + b[0];
+		if (shu + b[1] > x)
+			x = shu + b[1];
+		if (zuoxie + b[2] > x)
+			x = zuoxie + b[2];
+		if (youxie + b[3] > x)
+			x = youxie + b[3];
+		//如果这附近空位为0 代表没地方下棋权重直接减20，然后求横竖左斜右斜哪个人方+空多，就哪权重高
+	}
+	return x;
+}
 int score(int x, int y, char color)
 {
 	//int score(int m, int n, int k)//mn为坐标,k为判断是谁下的
 	//int i, j, p = 0, q = 0, b[4] = { 0 }, x = 0, shu, heng, zuoxie, youxie;
-	int color_of_map, map_blank[4] = { 0 }, map_friend[4] = { 0 };//0：横		1：竖向		2：左斜		3：右斜
+	int color_of_map, map_blank[4], map_friend[4];//0：横		1：竖向		2：左斜		3：右斜
+	for (int i = 0; i <= 3; i++)
+	{
+		map_blank[i] = 0;
+		map_friend[i] = 0;
+	}
+
 	if (color == 'b')
 	{
 		color_of_map = 1;
@@ -160,7 +332,7 @@ int score(int x, int y, char color)
 		color_of_map = 2;
 	}
 	//横向_右侧
-	for (int i = x; i < x + 5, i < 15; i++)
+	for (int i = x; i <= x + 5, i < 15; i++)
 	{
 		if (map[i][y] != color_of_map)
 		{
@@ -176,7 +348,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//横向_左侧
-	for (int i = x - 1; i > x - 5, i >= 0; i--)
+	for (int i = x - 1; i >= x - 5, i >= 0; i--)
 	{
 		if (map[i][y] != color_of_map)
 		{
@@ -192,7 +364,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//纵向_右侧
-	for (int i = y; i < y + 5, i < 15; i++)
+	for (int i = y; i <= y + 5, i < 15; i++)
 	{
 		if (map[x][i] != color_of_map)
 		{
@@ -208,7 +380,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//纵向_左侧
-	for (int i = y - 1; i > y - 5, i >= 0; i++)
+	for (int i = y - 1; i >= y - 5, i >= 0; i++)
 	{
 		if (map[x][i] != color_of_map)
 		{
@@ -224,7 +396,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//右斜_右	右上侧
-	for (int i = x, u = y; i < 15, u < 15, i < x + 5, u < y + 5; i++, u++)
+	for (int i = x, u = y; i < 15, u < 15, i <= x + 5, u <= y + 5; i++, u++)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -240,7 +412,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//右斜_左	左下侧
-	for (int i = x - 1, u = y - 1; i >= 0, u >= 0, i > x - 5, u > y - 5; i--, u--)
+	for (int i = x - 1, u = y - 1; i >= 0, u >= 0, i >= x - 5, u >= y - 5; i--, u--)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -256,7 +428,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_左	左上侧
-	for (int i = x, u = y; i >= 0, u<15, i > x - 5, u < y + 5; i--, u++)
+	for (int i = x, u = y; i >= 0, u < 15, i >= x - 5, u <= y + 5; i--, u++)
 	{
 		if (map[i][u] != color_of_map)
 		{
@@ -272,7 +444,7 @@ int score(int x, int y, char color)
 		}
 	}
 	//左斜_右	右下侧
-	for (int i = x + 1, u = y - 1; i < 15, u >= 0, i<x + 5, u > y - 5; i++, u--)
+	for (int i = x + 1, u = y - 1; i < 15, u >= 0, i <= x + 5, u >= y - 5; i++, u--)
 	{
 		if (map[i][u] != color_of_map)
 		{
