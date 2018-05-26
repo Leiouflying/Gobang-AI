@@ -43,6 +43,7 @@ int main()
 	srand((int)time(0));//Set a send of rand fuction by time
 	CreateEnvironment();
 	ClearMap();	//使用前可能要清理一下map
+	TestTools();
 	version();
 	if (WhoFirst() == 1)//AI first
 	{
@@ -691,23 +692,39 @@ void PutPiece(char color, int x, int y)//color w:white_piece b:black_piece	local
 }
 void TestTools()
 {
-	//棋盘边界测试
-	int x1 = 27, y1 = 27;
-	fillrectangle(x1, y1, x1 + 20, y1 + 10);
-	int x2 = 574, y2 = 571;
-	fillrectangle(x2, y2, x2 - 20, y2 - 10);
-	//绘制棋盘外框线（素材中已提供，暂不重复绘制防止误差）
-	int m = 15.61;//CreateEnvironment()函数中会提供
-	line(27, 27, 2.5 * m * 14 + 27, 27);//上 横
-	line(27, 571, 2.5 * m * 14 + 27, 571);//下 横
-	line(27, 27, 27, 2.5 * m * 14 + 27);//左 竖
-	line(574, 27, 574, 2.5 * m * 14 + 27);//右 竖
-	//棋子映射测试 绘制全棋盘的棋子
-	for (int i = 0; i <= 15; i++)
+	////棋盘边界测试
+	//int x1 = 27, y1 = 27;
+	//fillrectangle(x1, y1, x1 + 20, y1 + 10);
+	//int x2 = 574, y2 = 571;
+	//fillrectangle(x2, y2, x2 - 20, y2 - 10);
+	////绘制棋盘外框线（素材中已提供，暂不重复绘制防止误差）
+	//int m = 15.61;//CreateEnvironment()函数中会提供
+	//line(27, 27, 2.5 * m * 14 + 27, 27);//上 横
+	//line(27, 571, 2.5 * m * 14 + 27, 571);//下 横
+	//line(27, 27, 27, 2.5 * m * 14 + 27);//左 竖
+	//line(574, 27, 574, 2.5 * m * 14 + 27);//右 竖
+	////棋子映射测试 绘制全棋盘的棋子
+	//for (int i = 0; i <= 15; i++)
+	//{
+	//	for (int m = 0; m <= 15; m++)
+	//	{
+	//		PutPiece('b', i, m);
+	//	}
+	//}
+	//坐标获取工具
+	//MOUSEMSG mouse_msg;//定义鼠标消息
+	int i = 0;
+	FILE *stream;
+	freopen_s(&stream, "D:\\mouse.log", "w", stdout);
+	while (true)
 	{
-		for (int m = 0; m <= 15; m++)
+		mouse_msg = GetMouseMsg();
+		switch (mouse_msg.uMsg)
 		{
-			PutPiece('b', i, m);
+		case WM_LBUTTONDOWN:
+			cout << i << ":	(" << mouse_msg.x << "," << mouse_msg.y << ")" << endl;
+			putpixel(mouse_msg.x, mouse_msg.y, RED);
+			i++;
 		}
 	}
 }
