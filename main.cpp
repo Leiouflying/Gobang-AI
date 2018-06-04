@@ -43,8 +43,7 @@ int main()
 	srand((int)time(0));//Set a send of rand fuction by time
 	CreateEnvironment();
 	ClearMap();	//使用前可能要清理一下map
-	TestTools();
-	version();
+	//version();
 	if (WhoFirst() == 1)//AI first
 	{
 		//设定AI先手下的位置 使用随机数
@@ -328,12 +327,7 @@ int score(int x, int y, char color)
 {
 	//int score(int m, int n, int k)//mn为坐标,k为判断是谁下的
 	//int i, j, p = 0, q = 0, b[4] = { 0 }, x = 0, shu, heng, zuoxie, youxie;
-	int color_of_map, map_blank[4], map_friend[4];//0：横		1：竖向		2：左斜		3：右斜
-	for (int i = 0; i <= 3; i++)
-	{
-		map_blank[i] = 0;
-		map_friend[i] = 0;
-	}
+	int color_of_map, map_blank[4] = { 0 }, map_friend[4] = { 0 };//0：横		1：竖向		2：左斜		3：右斜
 
 	if (color == 'b')
 	{
@@ -352,12 +346,14 @@ int score(int x, int y, char color)
 			if (map[i][y] == 0)
 			{
 				map_blank[0]++;
+				cout << i << y << map[i][y] << color_of_map;
 			}
 			break;
 		}
 		else
 		{
 			map_friend[0]++;
+			cout << i<<y<<map[i][y]<<color_of_map;
 		}
 	}
 	//横向_左侧
@@ -376,7 +372,7 @@ int score(int x, int y, char color)
 			map_friend[0]++;
 		}
 	}
-	//纵向_右侧
+	//纵向_下侧
 	for (int i = y; i < y + 5, i < 15; i++)
 	{
 		if (map[x][i] != color_of_map)
@@ -384,15 +380,17 @@ int score(int x, int y, char color)
 			if (map[x][i] == 0)
 			{
 				map_blank[1]++;
+				cout << i << x << map[x][i] << color_of_map;
 			}
 			break;
 		}
 		else
 		{
 			map_friend[1]++;
+			cout << i << x << map[x][i] << color_of_map;
 		}
 	}
-	//纵向_左侧
+	//纵向_上侧
 	for (int i = y - 1; i > y - 5, i >= 0; i++)
 	{
 		if (map[x][i] != color_of_map)
@@ -472,6 +470,7 @@ int score(int x, int y, char color)
 			map_friend[2]++;
 		}
 	}
+	cout << x << y << map_friend[0] << map_friend[1] << map_friend[2] << map_friend[3] << map_blank[0] << map_blank[1] << map_blank[2] << map_blank[3];
 	if (map_friend[0] > 4 || map_friend[1] > 4 || map_friend[2] > 4 || map_friend[3] > 4)
 	{
 		return 100;

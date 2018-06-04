@@ -126,6 +126,8 @@
     <ResourceCompile Include="Gobang-AI.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\geekdt.com\Web\Logo - New Design\round_128X128.ico" />
+    <Image Include="..\..\geekdt.com\Web\Logo - New Design\round_256X256.ico" />
     <Image Include="resource\background.bmp" />
     <Image Include="resource\black_piece.bmp" />
     <Image Include="resource\white_piece.bmp" />

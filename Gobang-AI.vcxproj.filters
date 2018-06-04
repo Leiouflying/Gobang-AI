@@ -39,5 +39,11 @@
     <Image Include="resource\background.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="..\..\geekdt.com\Web\Logo - New Design\round_256X256.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\geekdt.com\Web\Logo - New Design\round_128X128.ico">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>
